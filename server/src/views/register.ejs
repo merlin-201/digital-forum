@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
+    <title>Register</title>
+    <!-- General CSS Files -->
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <link rel="stylesheet" href="/assets/bundles/jquery-selectric/selectric.css">
+    <!-- Template CSS -->
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/components.css">
+    <!-- Custom style CSS -->
+    <link rel="stylesheet" href="/app.js">
+    <link rel='shortcut icon' type='image/x-icon' href='/assets/img/favicon.ico' />
+</head>
+
+<body>
+    <div class="loader"></div>
+    <div id="app">
+        <section class="section">
+            <div class="container mt-5">
+                <div class="row">
+                    <div
+                        class="col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-8 offset-lg-2 col-xl-8 offset-xl-2">
+                        <div class="card card-primary">
+                            <div class="card-header">
+                                <h4>Register</h4>
+                            </div>
+                            <div class="card-body">
+                                <form method="POST" action="/auth/register">
+                                    <div class="row">
+                                        <div class="form-group col-6">
+                                            <label for="first_name">Name</label>
+                                            <input id="first_name" type="text" class="form-control" name="name"
+                                                autofocus>
+                                        </div>
+                                        <div class="form-group col-6">
+                                            <label for="phone">Phone Number</label>
+                                            <input id="phone" type="tel" class="form-control" name="phone"
+                                                maxlength="12">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="email">Email</label>
+                                        <input id="email" type="email" class="form-control" name="email">
+                                        <div class="invalid-feedback">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary btn-lg btn-block">
+                                            Scan The QR Code
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="mb-4 text-muted text-center">
+                                Already Registered? <a href="/auth/login">Login</a>
+                            </div>
+                            <% if(typeof(message) !="undefined" ) { %>
+                                <div class="alert alert-danger mx-4" role="alert">
+                                    <%= message %>
+                                </div>
+                                <% } %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <!-- General JS Scripts -->
+    <script src="/assets/js/app.min.js"></script>
+    <!-- JS Libraies -->
+    <script src="/assets/bundles/jquery-pwstrength/jquery.pwstrength.min.js"></script>
+    <script src="/assets/bundles/jquery-selectric/jquery.selectric.min.js"></script>
+    <!-- Page Specific JS File -->
+    <script src="/assets/js/page/auth-register.js"></script>
+    <!-- Template JS File -->
+    <script src="/assets/js/scripts.js"></script>
+    <!-- Custom JS File -->
+    <script src="/assets/js/custom.js"></script>
+</body>
+
+
+
+</html>

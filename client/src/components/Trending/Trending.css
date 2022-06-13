@@ -1,0 +1,8 @@
+.card-header {
+    color: #012970 !important;
+}
+
+.list-group-item:hover{
+    background-color: #d7d7d7;
+    cursor: pointer;
+}

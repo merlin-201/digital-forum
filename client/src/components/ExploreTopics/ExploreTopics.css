@@ -1,0 +1,13 @@
+.nav-pills-header {
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.explore-topics-header {
+    color: #012970 !important;
+}
+
+.select-category {
+    border-top: 1px solid #012970; 
+    border-bottom: 1px solid #012970;
+}
