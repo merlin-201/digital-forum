@@ -1,7 +1,6 @@
 import React from 'react';
 import ProfileImage from "../assets/images/profile-img.jpg"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
 import {faEraser, faUpload } from '@fortawesome/free-solid-svg-icons';
 import Header from '../components/Header/Header';
 
