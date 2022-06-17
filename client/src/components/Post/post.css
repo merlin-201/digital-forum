@@ -1,0 +1,79 @@
+.pCard{
+  border-radius: 3px;
+  border: 0.5px solid #C4C4C4;
+}
+.pCard:hover {
+  background-color: #F7F7F7;
+  transition: 0.5s;
+}
+
+.pHeader{
+  /* border: 0.5px solid black; */
+}
+.pHeaderA{
+  width: 11%;
+  margin-top: 2%;
+  margin-left: 2%;
+  /* border: solid green; */
+}
+.pHeaderN{
+  width: 85%;
+  margin-top: 15px;
+  /* border: solid red; */
+
+}
+.pBodyS{
+  width: 13%;
+}
+.pBody{
+  /* border: 0.5px solid #00B0F0; */
+}
+.pFooter{
+  /* border: 0.5px solid black; */
+  height: 30px;
+  margin-bottom: 10px;
+}
+
+.Name{
+  font-weight: 600;
+  color: black;
+}
+
+.fadedtext{
+  font-weight: 300;
+  color: #536471;
+}
+
+.like{
+  fill: transparent;
+  stroke: #536471;
+}
+.likeActive{
+  fill: #229778;
+  color: #229778;
+}
+
+.dislike{
+  fill: transparent;
+  stroke: #536471;
+}
+.dislikeActive{
+  fill: #FF273D;
+  color: #FF273D;
+}
+
+.comment{
+  fill: transparent;
+  stroke: #536471;
+}
+.commentActive{
+  fill: #00B0F0;  
+}
+
+.Report{
+  fill: transparent;
+  stroke: #536471;
+}
+.ReportActive{
+  fill: #FF8F00;
+}

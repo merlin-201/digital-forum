@@ -9,7 +9,11 @@ import TopUsers from "../components/TopUsers/TopUsers";
 export default function Topic() {
     return (
         <div className="container-fluid dashboard">
-            
+            <div className="row">
+
+            <div className="col-lg-1"></div>
+            <div className="col-lg-10">
+
             <nav>
                 <ol className="breadcrumb">
                     <Link to="/" className="breadcrumb-item">Home</Link>
@@ -17,9 +21,16 @@ export default function Topic() {
                     <Link to="/" className="breadcrumb-item active">Doge Coin</Link>
                 </ol>
             </nav>
+            </div>
+            <div className="col-lg-1"></div>
+            </div>
 
             <div className="row">
-                <div className="col-lg-9">
+                <div className="col-lg-1">
+
+                </div>
+                {/* Post */}
+                <div className="col-lg-7">
 
                     <div className="container p-0">
                         <div className="row">
@@ -27,12 +38,12 @@ export default function Topic() {
                         </div>
 
                         <div className="row">
-
-                            <div className="col-lg-3 ps-0 d-none d-lg-block">
+        
+                            <div className="col-lg-4 ps-0 d-none d-lg-block">
                                 <TopUsers />
                             </div>
 
-                            <div className="col-lg-9 pe-0">
+                            <div className="col-lg-8 pe-0">
                                 <Post />
                                 <Post />
                                 <Post />
@@ -43,9 +54,12 @@ export default function Topic() {
                     </div>
 
                 </div>
-
+                    {/* Ad */}
                 <div className="col-lg-3 d-none d-lg-block">
                     <Advertisements />
+                </div>
+                <div className="col-lg-1">
+                    
                 </div>
             </div>
             
