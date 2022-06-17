@@ -6,6 +6,7 @@ import {
   Logo,
   // Favicon
 } from "../../assets/images";
+
 export default function Post() {
   return (
       <div className="card">

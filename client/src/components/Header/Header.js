@@ -1,18 +1,36 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome, faLock } from '@fortawesome/free-solid-svg-icons';
-
 import {
-    Profile,
     Logo,
     // Favicon
 } from "../../assets/images";
 
 import './Header.css'
 
-export default function Header() {
+import UserProfileDropDown from './UserProfileDropDown/UserProfileDropDown';
+
+/* ---------------------------- useDispatch Hook ---------------------------- */
+import { useDispatch, useSelector } from 'react-redux';
+
+/* --------------------------------- actions -------------------------------- */
+import { showModal } from '../../actions/authModal';
+
+export default function Header( ) {
+    const user = useSelector( state => state.auth.user );
+
+    /* -------------------------------- dispatch -------------------------------- */
+    const dispatch = useDispatch();
+
+    /* -------------------------------- functions ------------------------------- */
+    const handleLoginButton = () => {
+        dispatch( showModal("login") );  
+    }
+
+    const handleSignupButton = () => {
+        dispatch( showModal("signup") )
+    }
+
     return (
         <header id="header" className="header fixed-top d-flex justify-content-between align-items-center px-4 py-3">
 
@@ -30,41 +48,20 @@ export default function Header() {
             </div>
 
             <nav className="header-nav ms-auto">
+                { user 
+                    ? <UserProfileDropDown />
+                    : (
+                        <div className="d-flex justify-space-between">
+                            <button className="btn btn-success mx-2" onClick={handleLoginButton}>
+                                Log In
+                            </button>
 
-                <div className="nav-item dropdown">
-
-                    <Link to="#"  className="nav-link nav-profile d-flex align-items-center gap-2" data-bs-toggle="dropdown">
-                        <img src={Profile} alt="Profile" className="rounded-circle dropdown-toggle" />
-                    </Link>
-
-                    <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile p-3">
-
-                        <li className="dropdown-header">
-                            <h6>merlin-201</h6>
-                        </li>
-
-                        <li><hr className="dropdown-divider" /></li>
-
-                        <li>
-                            <Link to="/profile" className="dropdown-item d-flex align-items-center gap-2" >
-                                <FontAwesomeIcon icon={faHome} ></FontAwesomeIcon>
-
-                                <span>My Profile</span>
-                            </Link>
-                        </li>
-
-                        <li><hr className="dropdown-divider" /></li>
-
-                        <li>
-                            <Link to="/signout" className="dropdown-item d-flex align-items-center gap-2">
-                                <FontAwesomeIcon icon={faLock} ></FontAwesomeIcon>
-                                <span>Sign Out</span>
-                            </Link>
-                        </li>
-
-                    </ul>
-                </div>
-
+                            <button className="btn btn-primary mx-2" onClick={handleSignupButton}>
+                                Sign Up
+                            </button>
+                        </div>
+                    )
+                }
             </nav>
 
         </header>
