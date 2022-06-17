@@ -7,7 +7,7 @@ function TopicBanner() {
         backgroundColor : "#fff0b5"
     }
   return (
-    <div class="card d-flex flex-row pt-4 pb-2 px-4" style={style}>
+    <div className="card d-flex flex-row pt-4 pb-2 px-4" style={style}>
         <div className="topic-logo">
             <img src={DogecoinLogo} className="rounded-circle" width="120px" alt="" />
         </div>

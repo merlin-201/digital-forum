@@ -7,7 +7,7 @@ import "./TopicCard.css"
 
 function TopicCard() {
   return (
-    <Link to="topic" className="col-xl-4 col-md-6 text-reset">
+    <Link to="/topic" className="col-xl-4 col-md-6 text-reset">
             <div className="card shadow d-flex flex-column align-items-center p-3 topic-card">
                 <img src={DogecoinLogo} className="rounded-circle" width="100px" alt="" />
                 <span className="topic-name">Dogecoin</span>
