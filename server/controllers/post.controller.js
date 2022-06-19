@@ -1,16 +1,19 @@
 const mysql = require("mysql");
 
 const { queryAsync } = require("../services/database");
-const { getPostUpvotesAndDownvotes } = require("../services/post");
 const { filterPostObject } = require("../services/queryObjectFilters");
 
 exports.getAllPosts = async (req, res) => {
     try {
-        let q = "SELECT post.*, user.firstname AS user_firstname, user.lastname AS user_lastname FROM post, user WHERE user.id = post.user_id";
+        let q = 
+        `SELECT post.*,` +
+            `user.firstname AS user_firstname, ` +
+            `user.lastname AS user_lastname, ` +
+            `(SELECT COUNT(*) FROM post_vote_mapping WHERE post_id = post.id AND vote = 1) AS upvote_count, ` +
+            `(SELECT COUNT(*) FROM post_vote_mapping WHERE post_id = post.id AND vote = 0) AS downvote_count ` +
+        `FROM post, user `+
+        `WHERE user.id = post.user_id`
         let posts = await queryAsync(q);
-
-        // another query to get userIds for all upvotes and downvotes
-        posts = await Promise.all( posts.map( async (post) => await getPostUpvotesAndDownvotes(post) ) );
 
         posts = posts.map( (post) => filterPostObject(post) );
 
@@ -29,14 +32,18 @@ exports.getPost = async (req, res) => {
     try {
         let postId = req.params.id;
 
-        let q = "SELECT post.*, user.firstname AS user_firstname, user.lastname AS user_lastname FROM post, user WHERE user.id = post.user_id AND post.id = ?";
+        let q = 
+        `SELECT post.*,` +
+            `user.firstname AS user_firstname, ` +
+            `user.lastname AS user_lastname, ` +
+            `(SELECT COUNT(*) FROM post_vote_mapping WHERE post_id = post.id AND vote = 1) AS upvote_count, ` +
+            `(SELECT COUNT(*) FROM post_vote_mapping WHERE post_id = post.id AND vote = 0) AS downvote_count ` +
+        `FROM post, user `+
+        `WHERE user.id = post.user_id AND post.id = ?`
 
         q = mysql.format(q, [postId]);
 
         let [post] = await queryAsync(q);
-
-        // another query to get userIds for all upvotes and downvotes
-        post = await getPostUpvotesAndDownvotes(post);
 
         post = filterPostObject(post);
 
@@ -51,12 +58,18 @@ exports.getPost = async (req, res) => {
 exports.getPostsByTopic = async (req, res) => {
     let topicId = req.params.id
     try {
-        let q = "SELECT post.*, user.firstname AS user_firstname, user.lastname AS user_lastname FROM post, user WHERE user.id = post.user_id AND post.topic_id = ? ORDER BY post.created_time DESC";
+        let q = 
+        `SELECT post.*,` +
+            `user.firstname AS user_firstname, ` +
+            `user.lastname AS user_lastname, ` +
+            `(SELECT COUNT(*) FROM post_vote_mapping WHERE post_id = post.id AND vote = 1) AS upvote_count, ` +
+            `(SELECT COUNT(*) FROM post_vote_mapping WHERE post_id = post.id AND vote = 0) AS downvote_count ` +
+        `FROM post, user `+
+        `WHERE user.id = post.user_id AND post.topic_id = ?`;
+
         q = mysql.format(q, [topicId]);
         let posts = await queryAsync(q);
 
-        // another query to get userIds for all upvotes and downvotes
-        posts = await Promise.all( posts.map( async (post) => await getPostUpvotesAndDownvotes(post) ) );
 
         posts = posts.map( (post) => filterPostObject(post) );
 
@@ -85,12 +98,19 @@ exports.createPost = async (req, res) => {
         if(result.affectedRows === 0)
             return res.sendStatus(424);
 
-        q = "SELECT * FROM post WHERE id = ?";
+        q = 
+        `SELECT post.*,` +
+            `user.firstname AS user_firstname, ` +
+            `user.lastname AS user_lastname, ` +
+            `(SELECT COUNT(*) FROM post_vote_mapping WHERE post_id = post.id AND vote = 1) AS upvote_count, ` +
+            `(SELECT COUNT(*) FROM post_vote_mapping WHERE post_id = post.id AND vote = 0) AS downvote_count ` +
+        `FROM post, user `+
+        `WHERE user.id = post.user_id AND post.id = ?`;
+        
         q = mysql.format(q, [result.insertId]);
 
         let [post] = await queryAsync(q);
 
-        post = await getPostUpvotesAndDownvotes(post);
         post = filterPostObject(post);
 
         res.status(201).json(post);
