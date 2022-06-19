@@ -2,21 +2,17 @@ import React from 'react';
 import ProfileImage from "../assets/images/profile-img.jpg"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faEraser, faUpload } from '@fortawesome/free-solid-svg-icons';
-import Header from '../components/Header/Header';
+
 
 export default function Profile() {
-  return <>
-    <body>
-
-      {/* <!-- ======= Header ======= --> */}
-      <Header/>
-      {/* <!-- End Header --> */}
-
-
-
-      <main id="main" className="main">
-
-        <div className="pagetitle">
+  const username = "@johny_doe"
+  return( 
+    
+      <div>
+        <div className="row">
+          <div className="col-lg-1"></div>
+          <div className="col-lg-10">
+          <div className="pagetitle">
           <h1>Profile</h1>
           <nav>
             <ol className="breadcrumb">
@@ -28,15 +24,16 @@ export default function Profile() {
         </div>
         {/* <!-- End Page Title --> */}
 
-        <section className="section profile">
+        <div className="section profile">
           <div className="row">
-            <div className="col-xl-4">
+            <div className="col-xl-3">
 
               <div className="card">
                 <div className="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
                   <img src={ProfileImage} alt="Profile" className="rounded-circle" />
                   <h2>Kevin Anderson</h2>
+                  <h3 >{username}</h3>
                   <h3>Web Designer</h3>
                   <div className="social-links mt-2">
                     <a href="#" className="twitter"><i className="bi bi-twitter"></i></a>
@@ -49,7 +46,7 @@ export default function Profile() {
 
             </div>
 
-            <div className="col-xl-8">
+            <div className="col-xl-9">
 
               <div className="card">
                 <div className="card-body pt-3">
@@ -316,11 +313,12 @@ export default function Profile() {
 
             </div>
           </div>
-        </section>
+        </div>
+          </div>
+          <div className="col-lg-1"></div>
+        </div>
+        
 
-      </main>
-
-    </body>
-
-  </>;
+      </div>
+);
 }
