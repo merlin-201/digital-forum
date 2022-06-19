@@ -1,23 +1,16 @@
-const express = require("express")
-const router = express.Router()
+const express = require("express");
 
-const postController = require("../controllers/post")
+const postController = require("../controllers/post.controller.js");
 
-router
-    .route("/getAllPost")
-    .post(postController.getAllPost)
+const router = express.Router();
 
-router
-    .route("/addPost")
-    .post(postController.addPost)
-
-router
-    .route("/updateUpVote")
-    .post(postController.updateUpVote)
-
-    router
-    .route("/updateDownVote")
-    .post(postController.updateDownVote)
+router.get("/", postController.getAllPosts);
+router.post("/", postController.createPost);
+router.get("/:id", postController.getPost);
+router.post("/:id/upvote", postController.addPostVote(true));
+router.delete("/:id/upvote", postController.deletePostVote(true));
+router.post("/:id/downvote", postController.addPostVote(false));
+router.delete("/:id/downvote", postController.deletePostVote(false));
 
 
-module.exports = router
+module.exports = router;

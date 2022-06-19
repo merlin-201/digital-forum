@@ -26,5 +26,8 @@
     "ignore": [
       "tempAuthDatabase.json"
     ]
+  },
+  "devDependencies": {
+    "sentence-generator": "^1.0.1"
   }
 }
