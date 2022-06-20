@@ -1,0 +1,98 @@
+.card{
+  border-radius: 3px;
+  border: 0.5px solid #C4C4C4;
+}
+
+.card.is-reply-to-own {
+  border-bottom: 7px solid rgb(227, 181, 0);
+}
+
+.card.own {
+  border-bottom: 7px solid #bdbdbd;
+}
+
+.profile-img {
+  height: 60px;
+  width: 60px;
+  border-radius: 50%;
+}
+
+/* .own .profile-img{
+  padding: 1px;
+  border: 3px solid #007bff;
+}
+
+.own .user-name {
+  color: #007bff;
+} */
+
+.row {
+  margin: 0;
+}
+
+.action-btn {
+  width: 100%;
+  background-color: white;
+  border-radius: 4px;
+  height: 34px;
+  border: 1px solid rgba(0,0,0,.1);
+}
+
+.action-btn:hover{
+  background-color: rgba(0,0,0,.06);
+}
+
+.action-btn.downvote.active {
+  border-color: rgba(220, 53, 69);
+  background-color: rgba(220, 53, 69, .06);
+  color: rgba(220, 53, 69);
+  font-weight:  bold;
+}
+
+.action-btn.upvote.active {
+  border-color: rgba(25, 135, 84);
+  background-color: rgba(25, 135, 84, .06);
+  color: rgba(25, 135, 84);
+  font-weight:  bold;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.pHeaderA{
+  width: 11%;
+  margin-top: 2%;
+  margin-left: 2%;
+  /* border: solid green; */
+}
+.pHeaderN{
+  width: 85%;
+  margin-top: 15px;
+  /* border: solid red; */
+
+}
+.pBodyS{
+  width: 13%;
+}
+
+.pFooter{
+  /* border: 0.5px solid black; */
+  height: 30px;
+  margin-bottom: 10px;
+}
+
+.fadedtext{
+  font-weight: 300;
+  color: #536471;
+}

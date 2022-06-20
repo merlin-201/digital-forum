@@ -26,7 +26,7 @@ function App() {
           <div className="App">
             <Header/>
 
-            <main id="main" className="main">
+            <main id="main" className="main p-0 pt-3">
               <Routes>
                 <Route path="/"  element={<Home/>} />
                 <Route path="/home" element={<Home/>} />
