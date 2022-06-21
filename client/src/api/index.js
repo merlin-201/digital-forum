@@ -7,8 +7,9 @@ const API = axios.create({
 
 API.interceptors.request.use((req) => {
     if (localStorage.getItem('token')) {
-      req.headers.Authorization = `Bearer ${JSON.parse(localStorage.getItem('token'))}`;
+      req.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
     }
+    return req;
 })
 
 /* ---------------------------------- auth ---------------------------------- */
@@ -26,3 +27,8 @@ export const getTopic = (topicId) => API.get(`/topics/${topicId}`);
 
 /* ---------------------------------- posts --------------------------------- */
 export const getPosts = (topicId) => API.get(`/topics/${topicId}/posts`);
+export const upvotePost = (postId) => API.post(`/posts/${postId}/upvote`);
+export const unUpvotePost = (postId) => API.delete(`/posts/${postId}/upvote`);
+
+export const downvotePost = (postId) => API.post(`/posts/${postId}/downvote`);
+export const unDownvotePost = (postId) => API.delete(`/posts/${postId}/downvote`);

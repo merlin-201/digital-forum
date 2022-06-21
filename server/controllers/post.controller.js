@@ -10,7 +10,7 @@ exports.getAllPosts = async (req, res) => {
             `user.firstname AS user_firstname, ` +
             `user.lastname AS user_lastname, ` +
             `(SELECT COUNT(*) FROM post_vote_mapping WHERE post_id = post.id AND vote = 1) AS upvote_count, ` +
-            `(SELECT COUNT(*) FROM post_vote_mapping WHERE post_id = post.id AND vote = 0) AS downvote_count ` +
+            `(SELECT COUNT(*) FROM post_vote_mapping WHERE post_id = post.id AND vote = -1) AS downvote_count ` +
         `FROM post, user `+
         `WHERE user.id = post.user_id`
         let posts = await queryAsync(q);
@@ -37,7 +37,7 @@ exports.getPost = async (req, res) => {
             `user.firstname AS user_firstname, ` +
             `user.lastname AS user_lastname, ` +
             `(SELECT COUNT(*) FROM post_vote_mapping WHERE post_id = post.id AND vote = 1) AS upvote_count, ` +
-            `(SELECT COUNT(*) FROM post_vote_mapping WHERE post_id = post.id AND vote = 0) AS downvote_count ` +
+            `(SELECT COUNT(*) FROM post_vote_mapping WHERE post_id = post.id AND vote = -1) AS downvote_count ` +
         `FROM post, user `+
         `WHERE user.id = post.user_id AND post.id = ?`
 
@@ -56,20 +56,21 @@ exports.getPost = async (req, res) => {
 }
 
 exports.getPostsByTopic = async (req, res) => {
-    let topicId = req.params.id
+    let topicId = req.params.id;
+    let userId = res.locals?.user?.id;
     try {
         let q = 
         `SELECT post.*,` +
             `user.firstname AS user_firstname, ` +
             `user.lastname AS user_lastname, ` +
             `(SELECT COUNT(*) FROM post_vote_mapping WHERE post_id = post.id AND vote = 1) AS upvote_count, ` +
-            `(SELECT COUNT(*) FROM post_vote_mapping WHERE post_id = post.id AND vote = 0) AS downvote_count ` +
+            `(SELECT COUNT(*) FROM post_vote_mapping WHERE post_id = post.id AND vote = -1) AS downvote_count ` +
+            ( userId ? `,(SELECT vote FROM post_vote_mapping WHERE user_id = ? AND post_id = post.id) AS user_vote ` : ``) +
         `FROM post, user `+
         `WHERE user.id = post.user_id AND post.topic_id = ?`;
 
-        q = mysql.format(q, [topicId]);
+        q = mysql.format(q, userId ? [userId, topicId] : [topicId]);
         let posts = await queryAsync(q);
-
 
         posts = posts.map( (post) => filterPostObject(post) );
 
@@ -104,7 +105,7 @@ exports.createPost = async (req, res) => {
             `user.firstname AS user_firstname, ` +
             `user.lastname AS user_lastname, ` +
             `(SELECT COUNT(*) FROM post_vote_mapping WHERE post_id = post.id AND vote = 1) AS upvote_count, ` +
-            `(SELECT COUNT(*) FROM post_vote_mapping WHERE post_id = post.id AND vote = 0) AS downvote_count ` +
+            `(SELECT COUNT(*) FROM post_vote_mapping WHERE post_id = post.id AND vote = -1) AS downvote_count ` +
         `FROM post, user `+
         `WHERE user.id = post.user_id AND post.id = ?`;
         

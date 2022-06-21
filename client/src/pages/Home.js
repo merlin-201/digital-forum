@@ -8,6 +8,7 @@ import Trending from '../components/Trending/Trending';
 import UserRank from '../components/UserRank/UserRank';
 import Advertisements from '../components/Advertisements/Advertisements';
 import ExploreTopics from '../components/ExploreTopics/ExploreTopics';
+import { clearPosts } from '../actions/posts';
 
 export default function Home() {
 
@@ -15,7 +16,7 @@ export default function Home() {
     
     React.useEffect( () => {
        dispatch( getAllCategories() );
-       console.log("fetched all categories");
+       dispatch( clearPosts() );
     },[]);
 
     const allCategories = useSelector( state => state.category.allCategories );

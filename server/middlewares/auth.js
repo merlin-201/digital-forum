@@ -2,32 +2,33 @@ const mysql = require('mysql');
 const {verifyToken} = require('../services/jwt');
 const {queryAsync } = require('../services/database');
 
-exports.requireAuth = async (req, res, next) => {
+exports.requireAuth = (optional = false) => async (req, res, next) => {
     const token = req.headers?.authorization?.split(" ")[1];
 
-    if(token){
-        try{
-            let decodedToken = verifyToken(token);
+    try {
+        if(!token)
+            throw "no authentication token found";
 
-            // bad tokens throw a error and are caught in the catch block
-            let userId = decodedToken.id;
+        let decodedToken = verifyToken(token);
 
-            let q = "SELECT * FROM user WHERE id = ?";
-            q = mysql.format(q, [userId]);
+        // bad tokens throw a error and are caught in the catch block
+        let userId = decodedToken.id;
 
-            let [user] = await queryAsync(q);
+        let q = "SELECT * FROM user WHERE id = ?";
+        q = mysql.format(q, [userId]);
 
-            if(!user)
-                return res.status(401).json( { message : "invalid authentication token"})
-            
-            res.locals.user = user;
+        let [user] = await queryAsync(q);
+
+        if(!user)
+            throw "invalid authentication token";
+        
+        res.locals.user = user;
+        next();
+    } catch (error) {
+        if(!optional)
+            return res.status(401).json( { message : error.message || error });
+        else
             next();
+    }
 
-        }catch(err){
-            res.status(401).json( { message : "invalid authentication token"})
-        }
-    }
-    else{
-        res.status(401).json( { message : "no authentication token found"})
-    }
 }

@@ -4,23 +4,30 @@ import {
   Profile,
 } from "../../../assets/images";
 
+import moment from "moment"
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowDown, faArrowUp, faEllipsis, faFlag, faReply, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { useDispatch } from "react-redux";
+import { downvotePost, unDownvotePost, unUpvotePost, upvotePost } from "../../../actions/posts";
 
 
 export default function Post( { isOwn, isReplyToOwn, post } ) {
-  const [isUpvoted, setIsUpvoted] = React.useState(false);
-  const [isDownvoted, setIsDownvoted] = React.useState(false);
+  const dispatch = useDispatch();
 
   /* -------------------------------- functions ------------------------------- */
   const handleUpvote = () => {
-    setIsUpvoted(true);
-    setIsDownvoted(false);
+    if(post.user_vote !== 1)
+      dispatch( upvotePost(post.id) );
+    else
+      dispatch( unUpvotePost(post.id));
   }
 
   const handleDownvote = () => {
-    setIsUpvoted(false);
-    setIsDownvoted(true);
+    if(post.user_vote !== -1)
+      dispatch( downvotePost(post.id) );
+    else
+      dispatch( unDownvotePost(post.id));
   }
 
   return (
@@ -37,7 +44,7 @@ export default function Post( { isOwn, isReplyToOwn, post } ) {
         <div className="col p-0 d-flex flex-column justify-content-end">
           <div>
               <span className="fw-bold user-name">{post.user_firstname} {post.user_lastname}</span>
-              <span className="text-muted small mx-2">&#9679;&nbsp;15d</span>
+              <span className="text-muted small mx-2">&#9679;&nbsp;{moment(post.created_time).fromNow()}</span>
           </div>
 
           <div>
@@ -64,7 +71,7 @@ export default function Post( { isOwn, isReplyToOwn, post } ) {
 
               {/* Upvote Button */}
               <div className="col-3 d-flex justify-content-center">
-                <button className={`action-btn upvote ${isUpvoted ? "active" : ""}`} onClick={handleUpvote}>
+                <button className={`action-btn upvote ${post.user_vote === 1 ? "active" : ""}`} onClick={handleUpvote}>
                   <FontAwesomeIcon icon={faArrowUp} />
                   <span className="small ms-sm-3 ms-2">{post.upvote_count}</span>
                 </button>
@@ -72,7 +79,7 @@ export default function Post( { isOwn, isReplyToOwn, post } ) {
 
               {/* Downvote Button */}
               <div className="col-3 d-flex justify-content-center">
-                <button className={`action-btn downvote ${isDownvoted ? "active" : ""}`} onClick={handleDownvote}>
+                <button className={`action-btn downvote ${post.user_vote === -1 ? "active" : ""}`} onClick={handleDownvote}>
                   <FontAwesomeIcon icon={faArrowDown} />
                   <span className="small ms-sm-3 ms-2">{post.downvote_count}</span>
                 </button>

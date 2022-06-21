@@ -15,7 +15,7 @@ export default function Topic() {
 
     const [showCommentBox, setShowCommentBox] = React.useState(false);
 
-    const {id : topicId} = useParams();
+    const topicId = parseInt( useParams().id );
 
     React.useEffect( () => {
         dispatch( getTopic(topicId) );
@@ -26,7 +26,7 @@ export default function Topic() {
     const posts = useSelector( (state) => state.posts)
 
 
-    return (topic && topic.id == topicId && posts.length !== 0) && (
+    return (topic && topic.id === topicId && posts.length !== 0) && (
         <div className="container-xl dashboard p-0">
 
             <div className="row justify-content-center">
