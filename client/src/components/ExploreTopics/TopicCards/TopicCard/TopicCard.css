@@ -6,11 +6,13 @@
 .topic-name {
     font-size: 18px;
     font-weight: bold;
+    margin-bottom: 5px;
 }
 
 .topic-followers {
     font-size: 12px;
     font-weight: bold;
+    margin: 0;
 }
 
 .topic-comments {

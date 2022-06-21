@@ -1,11 +1,11 @@
 import React from 'react'
 
-import TopicCard from '../TopicCard/TopicCard'
+import TopicCard from './TopicCard/TopicCard'
 
 
 function TopicCards() {
   return (
-    <div className="row p-3">
+    <div className="row p-sm-3 py-2">
         <TopicCard />
         <TopicCard />
         <TopicCard />

@@ -1,5 +1,7 @@
 import React from "react";
-import TopicCards from "../TopicCards/TopicCards";
+
+import CategoryDescription from "./CategoryDescription/CategoryDescription";
+import TopicCards from "./TopicCards/TopicCards";
 
 import "./ExploreTopics.css"
 
@@ -10,28 +12,26 @@ export default function ExploreTopics() {
       <div className="card">
 
         <div className="card-header">
-          <h2 className="fw-bold">Explore Topics</h2>
+          <h5 className="text-brand-blue fw-bold">Explore Topics :</h5>
+
+          <div className="dropdown dropend">
+            <button className="btn dropdown-toggle px-4" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+              Select Category&nbsp;
+            </button>
+            <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+              <li className="dropdown-item" >Cryptocurrency</li>
+              <li className="dropdown-item" >Stocks</li>
+              <li className="dropdown-item" >Mutual Funds</li>
+            </ul>
+          </div>
+
         </div>
 
         <div className="card-header px-4 select-category">
-
-          <p className="nav-pills-header my-2 fw-bold">Select Category :</p>
-
-          <ul className="nav nav-pills card-header-pills">
-            <li className="nav-item">
-              <button className="nav-link active">Cryptocurrency</button>
-            </li>
-            <li className="nav-item">
-              <button className="nav-link">Stocks</button>
-            </li>
-            <li className="nav-item">
-              <button className="nav-link">Mutual Funds</button>
-            </li>
-          </ul>
-
+          <CategoryDescription />
         </div>
 
-        <div className="card-body">
+        <div className="card-body px-sm-3 px-1">
           <TopicCards />
         </div>
 
