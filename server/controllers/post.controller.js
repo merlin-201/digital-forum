@@ -86,7 +86,8 @@ exports.getPostsByTopic = async (req, res) => {
 
 
 exports.createPost = async (req, res) => {
-    let { topic_id, user_id, text } = req.body;
+    let { topic_id, text } = req.body;
+    let { id : user_id } = res.locals.user;
 
     try {
         let q = "INSERT INTO post (topic_id, user_id, text) VALUES (?, ?, ?)";
@@ -130,7 +131,7 @@ exports.createPost = async (req, res) => {
 
 exports.addPostVote = (vote) => async (req, res) => {
     let postId = parseInt(req.params.id);
-    let { user_id : userId } = req.body;
+    let { id : userId } = res.locals.user;
     try {
         let q = "INSERT INTO post_vote_mapping ( post_id, user_id, vote ) VALUES ( ?, ?, ?)";
         q = mysql.format(q, [postId, userId, vote]);
@@ -165,10 +166,10 @@ exports.addPostVote = (vote) => async (req, res) => {
 }
 
 exports.deletePostVote = (vote) => async (req, res) => {
-    try {
-        let postId = parseInt(req.params.id);
-        let { user_id : userId } = req.body;
+    let postId = parseInt(req.params.id);
+    let { id : userId } = res.locals.user;
 
+    try {
         let q = "DELETE FROM post_vote_mapping WHERE post_id = ? AND user_id = ? AND vote = ?";
         q = mysql.format(q, [postId, userId, vote]);
 
