@@ -1,19 +1,19 @@
 import React from 'react'
 
-import DogecoinLogo from "../../assets/images/dogecoin.png"
+import { getImage } from '../../services/image'
 
-function TopicBanner() {
+function TopicBanner({topic}) {
     let style={
-        backgroundColor : "#fff0b5"
+        backgroundColor : "#eeeeee"
     }
   return (
     <div className="card d-flex flex-row pt-4 pb-2 px-4" style={style}>
         <div className="topic-logo">
-            <img src={DogecoinLogo} className="rounded-circle" width="120px" alt="" />
+            <img src={getImage(topic.thumbnail)} className="rounded-circle" width="120px" alt="" />
         </div>
         <div className="info d-flex flex-column ms-4 mb-3 justify-content-end">
-            <h1 className='fw-bold'>Doge Coin</h1>
-            <span className="fs-6 fw-bold">15.3K Followers</span>
+            <h1 className='fw-bold'>{topic.name}</h1>
+            <span className="fs-6 fw-bold">{topic.followers_count} Followers</span>
         </div>
     </div>
   )

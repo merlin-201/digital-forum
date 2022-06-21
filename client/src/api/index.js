@@ -18,4 +18,11 @@ export const login = (formData) => API.post(`/auth/login`, formData);
 
 /* -------------------------------- category -------------------------------- */
 export const getAllCategories = () => API.get(`/categories`);
+export const getCategory = (categoryId) => API.get(`/categories/${categoryId}`);
 export const getCategoryTopics = (categoryId) => API.get(`/categories/${categoryId}/topics`);
+
+/* ---------------------------------- topic --------------------------------- */
+export const getTopic = (topicId) => API.get(`/topics/${topicId}`);
+
+/* ---------------------------------- posts --------------------------------- */
+export const getPosts = (topicId) => API.get(`/topics/${topicId}/posts`);

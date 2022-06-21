@@ -3,12 +3,16 @@ import { combineReducers  } from "redux";
 import authModalReducer from "./authModal"
 import authReducer from "./auth";
 import categoryReducer from "./category";
+import topicReducer from "./topic";
+import postsReducer from "./posts";
 
 
 const allReducers = combineReducers({
     authModal : authModalReducer,
     auth : authReducer,
-    category : categoryReducer
+    category : categoryReducer,
+    topic : topicReducer,
+    posts : postsReducer
 })
 
 export default allReducers;

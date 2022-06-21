@@ -1,17 +1,32 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Advertisements from "../components/Advertisements/Advertisements";
 
 import TopicBanner from "../components/TopicBanner/TopicBanner";
 import TopUsers from "../components/TopUsers/TopUsers";
 import PostInput from "../components/PostInput/PostInput"
 import Posts from "../components/Posts/Posts";
+import { useDispatch, useSelector } from "react-redux";
+import { getTopic } from "../actions/topic";
+import { getPosts } from "../actions/posts";
 
 export default function Topic() {
+    const dispatch = useDispatch();
+
     const [showCommentBox, setShowCommentBox] = React.useState(false);
 
+    const {id : topicId} = useParams();
 
-    return (
+    React.useEffect( () => {
+        dispatch( getTopic(topicId) );
+        dispatch( getPosts(topicId) );
+    }, [])
+
+    const topic = useSelector( (state) => state.topic)
+    const posts = useSelector( (state) => state.posts)
+
+
+    return (topic && topic.id == topicId && posts.length !== 0) && (
         <div className="container-xl dashboard p-0">
 
             <div className="row justify-content-center">
@@ -21,8 +36,8 @@ export default function Topic() {
                     <nav>
                         <ol className="breadcrumb">
                             <Link to="/" className="breadcrumb-item">Home</Link>
-                            <Link to="/" className="breadcrumb-item">Cryptocurrency</Link>
-                            <Link to="/" className="breadcrumb-item active">Doge Coin</Link>
+                            <Link to="/" className="breadcrumb-item">{topic.category_name}</Link>
+                            <Link to={`/topic/${topic.id}`} className="breadcrumb-item active">{topic.name}</Link>
                         </ol>
                     </nav>
                 </div>
@@ -33,7 +48,7 @@ export default function Topic() {
                     <div className="container p-0">
 
                         <div className="row">
-                            <TopicBanner />
+                            <TopicBanner topic={topic}/>
                         </div>
 
                         <div className="row">
@@ -53,7 +68,7 @@ export default function Topic() {
                                 </div>
                                 
 
-                                <Posts />
+                                <Posts posts={posts}/>
 
                                 {showCommentBox && <PostInput setShowCommentBox={setShowCommentBox}/>}
 

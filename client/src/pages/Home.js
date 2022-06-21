@@ -1,6 +1,8 @@
 import React from 'react';
 
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+
+import { getAllCategories } from "../actions/category";
 
 import Trending from '../components/Trending/Trending';
 import UserRank from '../components/UserRank/UserRank';
@@ -9,9 +11,17 @@ import ExploreTopics from '../components/ExploreTopics/ExploreTopics';
 
 export default function Home() {
 
-    const allCategories = useSelector( state => state.category.allCategories );
+    const dispatch = useDispatch();
+    
+    React.useEffect( () => {
+       dispatch( getAllCategories() );
+       console.log("fetched all categories");
+    },[]);
 
-    return (allCategories.length !== 0 ) && (
+    const allCategories = useSelector( state => state.category.allCategories );
+    const currentCategory = useSelector( state => state.category.currentCategory);
+
+    return (allCategories.length !== 0 && currentCategory) && (
         <div className="container-fluid dashboard px-3">
             <div className="row">
 

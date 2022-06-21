@@ -56,6 +56,15 @@
   font-weight:  bold;
 }
 
+/* ------------------ tweaking boostrap classes for enabling clean dropdown on Ellipsis button ------------------ */
+
+.dropup {
+  width: 100%;
+}
+
+.dropup .dropdown-toggle::after{
+  content: none;
+}
 
 
 

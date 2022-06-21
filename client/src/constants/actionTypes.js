@@ -13,3 +13,6 @@ export const LOGOUT = "LOGOUT"
 
 export const GET_ALL_CATEGORIES = "GET_ALL_CATEGORIES"
 export const SET_CURRENT_CATEGORY = "SET_CURRENT_CATEGORY"
+
+export const GET_TOPIC = "GET_TOPIC"
+export const GET_POSTS = "GET_POSTS"
