@@ -1,12 +1,17 @@
 import React from 'react';
 
+import { useSelector } from "react-redux";
+
 import Trending from '../components/Trending/Trending';
 import UserRank from '../components/UserRank/UserRank';
 import Advertisements from '../components/Advertisements/Advertisements';
 import ExploreTopics from '../components/ExploreTopics/ExploreTopics';
 
 export default function Home() {
-    return (
+
+    const allCategories = useSelector( state => state.category.allCategories );
+
+    return (allCategories.length !== 0 ) && (
         <div className="container-fluid dashboard px-3">
             <div className="row">
 
@@ -18,7 +23,7 @@ export default function Home() {
                 
                 {/* Explore Topics */}
                 <div className="col-lg-6 col-md-8">
-                    <ExploreTopics />
+                    <ExploreTopics allCategories={allCategories} />
                 </div>
 
                 {/* Ads */}

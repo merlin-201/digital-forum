@@ -15,3 +15,7 @@ const API = axios.create({
 export const signup = (formData) => API.post(`/auth/signup`, formData);
 export const verify = (formData) => API.post(`/auth/verify`, formData);
 export const login = (formData) => API.post(`/auth/login`, formData);
+
+/* -------------------------------- category -------------------------------- */
+export const getAllCategories = () => API.get(`/categories`);
+export const getCategoryTopics = (categoryId) => API.get(`/categories/${categoryId}/topics`);

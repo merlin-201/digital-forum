@@ -10,3 +10,6 @@ export const RESET_SIGN_UP = "RESET_SIGN_UP"
 export const VERIFY_TOTP = "VERIFY_TOTP"
 export const LOGIN = "LOGIN"
 export const LOGOUT = "LOGOUT"
+
+export const GET_ALL_CATEGORIES = "GET_ALL_CATEGORIES"
+export const SET_CURRENT_CATEGORY = "SET_CURRENT_CATEGORY"

@@ -8,6 +8,10 @@ import "./assets/style.css" //very important
 /* ---------------------------- react-router-dom ---------------------------- */
 import { BrowserRouter as Router,Route, Routes } from 'react-router-dom';
 
+import {useDispatch } from "react-redux";
+
+import { getAllCategories } from "./actions/category";
+
 /* ---------------------------------- pages --------------------------------- */
 import Home from './pages/Home';
 import Topic from './pages/Topic'
@@ -20,6 +24,12 @@ import AuthModal from './components/AuthModal/AuthModal';
 
 
 function App() {
+  const dispatch = useDispatch();
+
+  React.useEffect( () => {
+     dispatch( getAllCategories() );
+     console.log("fetched all categories");
+  },[]);
 
   return (
       <Router>
@@ -30,7 +40,7 @@ function App() {
               <Routes>
                 <Route path="/"  element={<Home/>} />
                 <Route path="/home" element={<Home/>} />
-                <Route path="/topic" element={<Topic/>} />
+                <Route path="/topic/:id" element={<Topic/>} />
                 <Route path="/profile" element={<Profile/>} />
                 <Route path="/register" element={<Register/>} />
               </Routes>
