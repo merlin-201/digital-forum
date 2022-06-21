@@ -9,13 +9,19 @@ import UserRank from '../components/UserRank/UserRank';
 import Advertisements from '../components/Advertisements/Advertisements';
 import ExploreTopics from '../components/ExploreTopics/ExploreTopics';
 import { clearPosts } from '../actions/posts';
+import { useSearchParams } from 'react-router-dom';
 
 export default function Home() {
 
     const dispatch = useDispatch();
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    // this is used to already select a particular category from the dropdown right when the page is loaded
+    // by default the first category is selected
+    const selectedCategoryId = searchParams.get('cat') || null;
     
     React.useEffect( () => {
-       dispatch( getAllCategories() );
+       dispatch( getAllCategories( parseInt(selectedCategoryId)) );
        dispatch( clearPosts() );
     },[]);
 

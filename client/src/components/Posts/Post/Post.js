@@ -8,15 +8,23 @@ import moment from "moment"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowDown, faArrowUp, faEllipsis, faFlag, faReply, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { downvotePost, unDownvotePost, unUpvotePost, upvotePost } from "../../../actions/posts";
+import { showModal } from "../../../actions/authModal";
 
 
 export default function Post( { isOwn, isReplyToOwn, post } ) {
   const dispatch = useDispatch();
 
+  const isUserLoggedIn = useSelector( state => state.auth.user ? true : false)
+
   /* -------------------------------- functions ------------------------------- */
   const handleUpvote = () => {
+    if( !isUserLoggedIn ){
+      dispatch( showModal('login') );
+      return;
+    }
+      
     if(post.user_vote !== 1)
       dispatch( upvotePost(post.id) );
     else
@@ -24,6 +32,11 @@ export default function Post( { isOwn, isReplyToOwn, post } ) {
   }
 
   const handleDownvote = () => {
+    if( !isUserLoggedIn ){
+      dispatch( showModal('login') );
+      return;
+    }
+
     if(post.user_vote !== -1)
       dispatch( downvotePost(post.id) );
     else

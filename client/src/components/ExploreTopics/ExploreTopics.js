@@ -16,7 +16,7 @@ export default function ExploreTopics( { allCategories } ) {
 
     /* -------------------------------- functions ------------------------------- */
     const handleCategorySelection = (category) => {
-      dispatch( setCurrentCategory(category) );
+      dispatch( setCurrentCategory(category.id) );
     }
 
     console.log(selectedCategory);

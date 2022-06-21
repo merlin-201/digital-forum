@@ -36,7 +36,7 @@ export default function Topic() {
                     <nav>
                         <ol className="breadcrumb">
                             <Link to="/" className="breadcrumb-item">Home</Link>
-                            <Link to="/" className="breadcrumb-item">{topic.category_name}</Link>
+                            <Link to={`/?cat=${topic.category_id}`} className="breadcrumb-item">{topic.category_name}</Link>
                             <Link to={`/topic/${topic.id}`} className="breadcrumb-item active">{topic.name}</Link>
                         </ol>
                     </nav>

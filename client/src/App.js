@@ -30,7 +30,6 @@ function App() {
             <main id="main" className="main p-0 pt-3">
               <Routes>
                 <Route path="/"  element={<Home/>} />
-                <Route path="/home" element={<Home/>} />
                 <Route path="/topic/:id" element={<Topic/>} />
                 <Route path="/profile" element={<Profile/>} />
                 <Route path="/register" element={<Register/>} />
