@@ -25,7 +25,10 @@ exports.getTopic = async (req, res) => {
     try {
         let topicId = req.params.id;
 
-        let q = "SELECT * FROM topic WHERE id = ?";
+        let q = 
+        `SELECT topic.*, category.name AS category_name `+
+        `FROM topic, category `+
+        `WHERE topic.id = ? AND topic.category_id = category.id`;
         q = mysql.format(q, [topicId]);
 
         let [topic] = await queryAsync(q);
