@@ -9,6 +9,9 @@ const app = express()
 
 /* ------------------------------- middlewares ------------------------------ */
 
+// Indicating static files to express :
+app.use( express.static('public') );
+
 // For parsing application/json :
 app.use( bodyParser.json() );
 
