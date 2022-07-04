@@ -13,14 +13,14 @@ import { verify } from "../../../actions/auth";
 
 
 
-function QR( { errorMessage } ) {
+function QR( { signupData, errorMessage } ) {
     const dispatch = useDispatch();
 
     /* --------------------------------- states --------------------------------- */
     const [ totp, setTotp ] = React.useState(null);
 
     /* ------------------------- variables obtained in the redux store after signup ------------------------- */
-    const userId = useSelector( (state) => state.auth.userId );
+    const tempSecret = useSelector( (state) => state.auth.tempSecret );
     const qrCodeDataURL = useSelector( (state) => state.auth.qr );
 
 
@@ -31,9 +31,13 @@ function QR( { errorMessage } ) {
 
     const handleSubmit = () => {
         const formData = {
-            userId : userId,
+            ...signupData,
+            tempSecret : tempSecret,
             totp : totp
         }
+        //console.log("sending verify request : ");
+        //console.log(formData);
+
         dispatch( verify(formData) );
     }
 

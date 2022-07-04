@@ -15,10 +15,10 @@ function Signup( {errorMessage} ) {
 
     /* --------------------------------- states --------------------------------- */
     const [formData, setFormData] = React.useState({
-        firstname : "Ninad",
-        lastname : "Patil",
-        email : "ninu@gmail.com",
-        phone : "8793531178"
+        firstname : "",
+        lastname : "",
+        username : "",
+        email : "",
     });
 
     /* -------------------------- redux-store variables ------------------------- */
@@ -35,15 +35,20 @@ function Signup( {errorMessage} ) {
     }
 
     const handleSubmit = () => {
-        console.log("Sending signup request...");
-        console.log(formData);
+        let reqBody = {
+            username : formData.username,
+            email : formData.email
+        };
 
-        dispatch( signup(formData) );
+        //console.log("Sending signup request...");
+        //console.log(reqBody);
+
+        dispatch( signup(reqBody) );
     }
 
     return ( 
         showQRCode
-        ? <QR errorMessage={errorMessage}/>
+        ? <QR errorMessage={errorMessage} signupData={formData}/>
         : (
             <>
                 <Modal.Header closeButton>
@@ -53,7 +58,7 @@ function Signup( {errorMessage} ) {
                 <Modal.Body>
                     <form className='px-3'>
                         <div className="row">
-                            <div className="form-group col-6">
+                            <div className="form-group col-6 ps-0">
                                 <label htmlFor="firstname">First Name</label>
                                 <input
                                     id="firstname"
@@ -67,7 +72,7 @@ function Signup( {errorMessage} ) {
                                 />
                             </div>
 
-                            <div className="form-group col-6">
+                            <div className="form-group col-6 pe-0">
                                 <label htmlFor="lastname">Last Name</label>
                                 <input
                                     id="lastname"
@@ -80,20 +85,18 @@ function Signup( {errorMessage} ) {
                                 />
                             </div>
                         </div>
-                        
 
                         <div className="form-group">
-                            <label htmlFor="phone">Phone Number</label>
-                            <input 
-                                id="phone"
-                                type="tel"
-                                className="form-control mb-3"
-                                name="phone"
-                                maxLength="12"
-                                placeholder="Enter Phone Number"
-                                onChange={handleChange}
-                                value={formData.phone}
-                            />
+                                <label htmlFor="firstname">Username</label>
+                                <input
+                                    id="username"
+                                    type="text"
+                                    className="form-control mb-3"
+                                    name="username"
+                                    placeholder="Enter username"
+                                    onChange={handleChange}
+                                    value={formData.username}
+                                />
                         </div>
 
                         <div className="form-group">

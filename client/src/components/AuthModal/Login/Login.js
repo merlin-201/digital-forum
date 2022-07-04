@@ -12,7 +12,7 @@ function Login( {errorMessage} ) {
     const dispatch = useDispatch();
     /* --------------------------------- states --------------------------------- */
     const [formData, setFormData] = React.useState({
-        email : "ninu@gmail.com",
+        email : "",
         totp : ""
     })
 

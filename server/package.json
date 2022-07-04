@@ -1,33 +1,24 @@
 {
-  "name": "coin",
-  "version": "1.0.0",
-  "description": "Digital Foroum",
-  "main": "index.js",
-  "scripts": {
-    "start": "nodemon index.js"
-  },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.20.0",
+    "bree": "^9.1.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
-    "dotenv": "^10.0.0",
-    "ejs": "^3.1.6",
-    "express": "^4.17.2",
+    "dotenv": "^16.0.1",
+    "exceljs": "^4.3.0",
+    "express": "^4.18.1",
     "jsonwebtoken": "^8.5.1",
-    "mysql": "^2.18.1",
-    "node-json-db": "^1.5.0",
-    "nodemon": "^2.0.15",
+    "multer": "^1.4.5-lts.1",
+    "mysql2": "^2.3.3",
     "qrcode": "^1.5.0",
+    "sequelize": "^6.21.1",
+    "sequelize-auto-migrations": "github:scimonster/sequelize-auto-migrations#a063aa6535a3f580623581bf866cef2d609531ba",
+    "sharp": "^0.30.7",
     "speakeasy": "^2.0.0",
     "uuid": "^8.3.2"
   },
-  "nodemonConfig": {
-    "ignore": [
-      "tempAuthDatabase.json"
-    ]
-  },
   "devDependencies": {
-    "sentence-generator": "^1.0.1"
+    "@faker-js/faker": "^7.3.0",
+    "sequelize-auto": "^0.8.8"
   }
 }

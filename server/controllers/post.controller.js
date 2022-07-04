@@ -1,23 +1,30 @@
-const mysql = require("mysql");
-
-const { queryAsync } = require("../services/database");
-const { getPostUpvotesAndDownvotes } = require("../services/post");
-const { filterPostObject } = require("../services/queryObjectFilters");
+const { Post, User, Topic, Vote } = require("../models");
+const Sequelize = require("sequelize");
 
 exports.getAllPosts = async (req, res) => {
     try {
-        let q = "SELECT post.*, user.firstname AS user_firstname, user.lastname AS user_lastname FROM post, user WHERE user.id = post.user_id";
-        let posts = await queryAsync(q);
+        let posts = await Post.findAll({
+            include : [
+                {
+                    model : User,
+                    as : "user"
+                },
+                {
+                    model : User,
+                    as : "tagged_user",
+                    attributes : ["id", "username"]
+                },
+                {
+                    model : Topic,
+                    as : "topic"
+                }
+            ]
+        });
 
-        // another query to get userIds for all upvotes and downvotes
-        posts = await Promise.all( posts.map( async (post) => await getPostUpvotesAndDownvotes(post) ) );
-
-        posts = posts.map( (post) => filterPostObject(post) );
-
-        res.status(200).json( {
+        res.status(200).json({
             count : posts.length,
             data : posts
-        });
+        })
         
     } catch (error) {
         console.log(error);
@@ -25,21 +32,33 @@ exports.getAllPosts = async (req, res) => {
     }
 }
 
+
 exports.getPost = async (req, res) => {
+    const postId = req.params.id;
     try {
-        let postId = req.params.id;
 
-        let q = "SELECT post.*, user.firstname AS user_firstname, user.lastname AS user_lastname FROM post, user WHERE user.id = post.user_id AND post.id = ?";
+        let post = await Post.findOne({
+            where : { id : postId },
+            include : [
+                {
+                    model : User,
+                    as : "user"
+                },
+                {
+                    model : User,
+                    as : "tagged_user",
+                    attributes : ["id", "username"]
+                },
+                {
+                    model : Topic,
+                    as : "topic"
+                }
+            ]
+        })
 
-        q = mysql.format(q, [postId]);
-
-        let [post] = await queryAsync(q);
-
-        // another query to get userIds for all upvotes and downvotes
-        post = await getPostUpvotesAndDownvotes(post);
-
-        post = filterPostObject(post);
-
+        if(!post)
+            return res.status(404).json( { message : "No Post found with such ID"} );
+        
         res.status(200).json(post);
         
     } catch (error) {
@@ -48,17 +67,45 @@ exports.getPost = async (req, res) => {
     }
 }
 
+
 exports.getPostsByTopic = async (req, res) => {
-    let topicId = req.params.id
+    let topicId = req.params.id;
+    let userId = res.locals?.user?.id;
+
     try {
-        let q = "SELECT post.*, user.firstname AS user_firstname, user.lastname AS user_lastname FROM post, user WHERE user.id = post.user_id AND post.topic_id = ? ORDER BY post.created_time DESC";
-        q = mysql.format(q, [topicId]);
-        let posts = await queryAsync(q);
 
-        // another query to get userIds for all upvotes and downvotes
-        posts = await Promise.all( posts.map( async (post) => await getPostUpvotesAndDownvotes(post) ) );
-
-        posts = posts.map( (post) => filterPostObject(post) );
+        let posts = await Post.findAll({
+            where : { topic_id : topicId },
+            attributes : {
+                include : [
+                    // sequelize gives a complicated way of counting associations
+                    // as a workaroud we are passing some counts directly as Literals
+                    [ Sequelize.literal(`(SELECT COUNT(*) FROM vote WHERE post_id = post.id AND vote = 1)`), "upvote_count"],
+                    [ Sequelize.literal(`(SELECT COUNT(*) FROM vote WHERE post_id = post.id AND vote = -1)`), "downvote_count"],
+                    
+                    // WHAT IS HAPPENING BELOW ?
+                    // we need to get the user_vote only if the user is making a Authenthicated request i.e userId is present ( token is being sent )
+                    // we write a ternary ... that returns AND SPREADS two arrays conditionally... one if TRUE ..other empty array if FALSE
+                    ...( userId
+                        ? [ [ Sequelize.literal(`(SELECT vote FROM vote WHERE user_id = "${userId}" AND post_id = post.id)`), "user_vote"] ]
+                        : []
+                    )
+                ],
+                exclude : ["user_id", "tagged_user_id", "topic_id"] 
+            },
+            include : [
+                {
+                    model : User,
+                    as : "user"
+                },
+                {
+                    model : User,
+                    as : "tagged_user",
+                    attributes : ["id", "username"]
+                },
+            ],
+            order : [ ["created_at", "DESC"] ]
+        });
 
         res.status(200).json( {
             count : posts.length,
@@ -73,30 +120,55 @@ exports.getPostsByTopic = async (req, res) => {
 
 
 exports.createPost = async (req, res) => {
-    let { topic_id, user_id, text } = req.body;
+    let { id : userId } = res.locals.user;
 
     try {
-        let q = "INSERT INTO post (topic_id, user_id, text) VALUES (?, ?, ?)";
-        q = mysql.format(q, [topic_id, user_id, text]);
 
-        let result = await queryAsync(q);
+        let newPost = await Post.create({
+            text : req.body.text,
+            user_id : userId,
+            topic_id : req.body.topic_id,
+            tagged_user_id : req.body.tagged_user_id
+        });
 
-        // if some unexpected error does not cause the insertion
-        if(result.affectedRows === 0)
-            return res.sendStatus(424);
-
-        q = "SELECT * FROM post WHERE id = ?";
-        q = mysql.format(q, [result.insertId]);
-
-        let [post] = await queryAsync(q);
-
-        post = await getPostUpvotesAndDownvotes(post);
-        post = filterPostObject(post);
+        let post = await Post.findOne({
+            where : { id : newPost.id },
+            attributes : {
+                include : [
+                    // sequelize gives a complicated way of counting associations
+                    // as a workaroud we are passing some counts directly as Literals
+                    [ Sequelize.literal(`(SELECT COUNT(*) FROM vote WHERE post_id = post.id AND vote = 1)`), "upvote_count"],
+                    [ Sequelize.literal(`(SELECT COUNT(*) FROM vote WHERE post_id = post.id AND vote = -1)`), "downvote_count"],
+                    
+                    // WHAT IS HAPPENING BELOW ?
+                    // we need to get the user_vote only if the user is making a Authenthicated request i.e userId is present ( token is being sent )
+                    // we write a ternary ... that returns AND SPREADS two arrays conditionally... one if TRUE ..other empty array if FALSE
+                    ...( userId
+                        ? [ [ Sequelize.literal(`(SELECT vote FROM vote WHERE user_id = "${userId}" AND post_id = post.id)`), "user_vote"] ]
+                        : []
+                    )
+                ],
+                exclude : ["user_id"] 
+            },
+            include : [
+                {
+                    model : User,
+                    as : "user"
+                },
+                {
+                    model : User,
+                    as : "tagged_user",
+                    attributes : ["id", "username"]
+                },
+            ]
+        });
 
         res.status(201).json(post);
 
-
     } catch (error) {
+        if( error.name == 'SequelizeForeignKeyConstraintError'){
+            return res.status(400).json({ message : "No topic found with such ID"})
+        }
         console.log(error);
         res.status(500).json( {message : "Something went wrong"})
     }
@@ -104,63 +176,72 @@ exports.createPost = async (req, res) => {
 
 // don't get scared by the below syntax, Its just a function returning another function.
 // REASON : to generalise our addPostValue controller for both upvoting and downvoting we need to add a pramater "vote"
-// "vote" is mentioned in the controller call in the routing file
+// "vote" is mentioned in the controller function passed in the routing file
 // but all controllers require the (req, res) signature. So (vote, req, res) wont make sense
-// our controller takes in voteType as the argument and returns another controller with the normal (req, res) as the arguments
+// our controller takes in vote as the argument and returns another controller with the "normal" (req, res) as the arguments
 
 exports.addPostVote = (vote) => async (req, res) => {
-    let postId = parseInt(req.params.id);
-    let { user_id : userId } = req.body;
-    try {
-        let q = "INSERT INTO post_vote_mapping ( post_id, user_id, vote ) VALUES ( ?, ?, ?)";
-        q = mysql.format(q, [postId, userId, vote]);
+    let postId = req.params.id;
+    let { id : userId } = res.locals.user;
 
-        let result = await queryAsync(q);
-        // if the postVote already exists then a "ER_DUP_ENTRY" will occur here
+    try {
+        let newVote = await Vote.create( { post_id : postId, user_id : userId, vote : vote } );
+
+        // if the vote already exists in the Vote Table then a "ER_DUP_ENTRY" error will occur here
         // this is dealt with in the catch block
 
-        if(result.affectedRows !== 0)
-            res.sendStatus(204);
+        if(newVote)
+            return res.sendStatus(204);
         else
-            res.sendStatus(424);
+            return res.sendStatus(424); // in case creation was not successful
 
     } catch (error) {
-        if( error.code === "ER_DUP_ENTRY"){
-            let q = "UPDATE post_vote_mapping SET vote = ? WHERE post_id = ? AND user_id = ?";
-            q = mysql.format(q, [vote, postId, userId]);
+        // if there is already a vote present in the DB for given post_id and user_id ... we simply update the "vote" attribute
+        if( error?.original?.code === "ER_DUP_ENTRY"){
+            let [updatedCount] = await Vote.update( { vote : vote },{
+                where : {
+                    post_id : postId,
+                    user_id : userId
+                }
+            });
 
-            let result = await queryAsync(q);
-
-            if(result.affectedRows !== 0)
-                res.sendStatus(204);
+            if(updatedCount)
+                return res.sendStatus(204);
             else
-                res.sendStatus(424);
+                return res.sendStatus(424);
         }
-        else{
-            console.log(error);
-            res.status(500).json( { message : "Something went wrong."} );
+        else if( error.name == 'SequelizeForeignKeyConstraintError'){
+            return res.status(400).json({ message : "No post found with such ID"})
         }
-            
+
+        console.log(error);
+        res.status(500).json( { message : "Something went wrong."} );    
     }
 }
 
+
 exports.deletePostVote = (vote) => async (req, res) => {
+    let postId = req.params.id;
+    let { id : userId } = res.locals.user;
+
     try {
-        let postId = parseInt(req.params.id);
-        let { user_id : userId } = req.body;
+        let isDeleted = await Vote.destroy({
+            where : {
+                post_id : postId,
+                user_id : userId,
+                vote : vote
+            }
+        });
 
-        let q = "DELETE FROM post_vote_mapping WHERE post_id = ? AND user_id = ? AND vote = ?";
-        q = mysql.format(q, [postId, userId, vote]);
 
-        let result = await queryAsync(q);
-
-        if(result.affectedRows !== 0)
-            res.sendStatus(204);
+        if(isDeleted)
+            return res.sendStatus(204);
         else
-            res.sendStatus(424);
+            return res.sendStatus(424); // in case there was no deletion
 
     } catch (error) {
         console.log(error);
         res.status(500).json( { message : "Something went wrong."} );   
     }
 }
+

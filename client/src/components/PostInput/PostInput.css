@@ -1,0 +1,17 @@
+.comment-box {
+    /* position: absolute; */
+    position: sticky;
+    width: 100%;
+    bottom: 0;
+    border: 3px solid #0d6efd;
+    border-bottom: 0;
+    margin-bottom: 0;
+
+    background-color: rgb(247, 247, 247);
+}
+
+.comment-box > .card-header{
+    border: black;
+    background-color: rgb(247, 247, 247);
+}
+
