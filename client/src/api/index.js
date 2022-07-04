@@ -20,7 +20,6 @@ export const login = (formData) => API.post(`/auth/login`, formData);
 /* -------------------------------- category -------------------------------- */
 export const getAllCategories = () => API.get(`/categories`);
 export const getCategory = (categoryId) => API.get(`/categories/${categoryId}`);
-export const getCategoryTopics = (categoryId) => API.get(`/categories/${categoryId}/topics`);
 
 /* ---------------------------------- topic --------------------------------- */
 export const getTopic = (topicId) => API.get(`/topics/${topicId}`);
@@ -32,3 +31,5 @@ export const unUpvotePost = (postId) => API.delete(`/posts/${postId}/upvote`);
 
 export const downvotePost = (postId) => API.post(`/posts/${postId}/downvote`);
 export const unDownvotePost = (postId) => API.delete(`/posts/${postId}/downvote`);
+
+export const createPost = (formData) => API.post(`/posts`, formData);

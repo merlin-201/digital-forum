@@ -17,10 +17,9 @@ export const getAllCategories = (selectedCategoryId) => async (dispatch) => {
 export const setCurrentCategory = (categoryId) => async (dispatch) => {
     try {
         // fetching the topics in the category :
-        let {data} = await api.getCategoryTopics(categoryId);
-        console.log("recieved data as : ", data.data);
+        let { data : category } = await api.getCategory(categoryId);
 
-        let action = {type : SET_CURRENT_CATEGORY, payload : {categoryId, topics : data.data} };
+        let action = {type : SET_CURRENT_CATEGORY, payload : category };
 
         dispatch( action );
     } catch (error) {

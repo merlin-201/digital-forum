@@ -10,10 +10,7 @@ const categoryReducer = (state = initialState, action) => {
         case GET_ALL_CATEGORIES:
             return {...state, allCategories : action.payload };
         case SET_CURRENT_CATEGORY:
-            return {...state, currentCategory : {
-                                            ...( state.allCategories.filter( (category) => category.id === action.payload.categoryId )[0] ),
-                                            topics : action.payload.topics
-            } };
+            return {...state, currentCategory : action.payload };
         default:
             return state;
     }

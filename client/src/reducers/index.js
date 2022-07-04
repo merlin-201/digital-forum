@@ -5,6 +5,7 @@ import authReducer from "./auth";
 import categoryReducer from "./category";
 import topicReducer from "./topic";
 import postsReducer from "./posts";
+import postInputPopupReducer from "./postInputPopup";
 
 
 const allReducers = combineReducers({
@@ -12,7 +13,8 @@ const allReducers = combineReducers({
     auth : authReducer,
     category : categoryReducer,
     topic : topicReducer,
-    posts : postsReducer
+    posts : postsReducer,
+    postInputPopup : postInputPopupReducer
 })
 
 export default allReducers;

@@ -21,7 +21,7 @@ export default function Home() {
     const selectedCategoryId = searchParams.get('cat') || null;
     
     React.useEffect( () => {
-       dispatch( getAllCategories( parseInt(selectedCategoryId)) );
+       dispatch( getAllCategories( selectedCategoryId ) );
        dispatch( clearPosts() );
     },[]);
 

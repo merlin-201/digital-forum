@@ -6,17 +6,28 @@ import {
 
 import moment from "moment"
 
+import { Link } from "react-router-dom";
+
+/* ------------------------------ font awesome ------------------------------ */
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowDown, faArrowUp, faEllipsis, faFlag, faReply, faTrash } from '@fortawesome/free-solid-svg-icons';
+
+/* ------------------------------- react-redux ------------------------------ */
 import { useDispatch, useSelector } from "react-redux";
+
+/* --------------------------------- actions -------------------------------- */
 import { downvotePost, unDownvotePost, unUpvotePost, upvotePost } from "../../../actions/posts";
 import { showModal } from "../../../actions/authModal";
+import { showPostInputPopup, tagUserInPostInput } from "../../../actions/postInputPopup";
 
 
-export default function Post( { isOwn, isReplyToOwn, post } ) {
+export default function Post( { post } ) {
   const dispatch = useDispatch();
 
-  const isUserLoggedIn = useSelector( state => state.auth.user ? true : false)
+  const isUserLoggedIn = useSelector( state => state.auth.user ? true : false);
+  const user = useSelector( state => state.auth.user);
+  const isOwn = ( user.id === post.user?.id );
+  const isReplyToOwn = ( user.id === post.tagged_user?.id );
 
   /* -------------------------------- functions ------------------------------- */
   const handleUpvote = () => {
@@ -40,7 +51,17 @@ export default function Post( { isOwn, isReplyToOwn, post } ) {
     if(post.user_vote !== -1)
       dispatch( downvotePost(post.id) );
     else
-      dispatch( unDownvotePost(post.id));
+      dispatch( unDownvotePost(post.id) );
+  }
+
+  const handleReply = () => {
+    if( !isUserLoggedIn ){
+      dispatch( showModal('login') );
+      return;
+    }
+    
+    dispatch( tagUserInPostInput(post.user.id, post.user.username) );
+    dispatch( showPostInputPopup() );
   }
 
   return (
@@ -56,12 +77,15 @@ export default function Post( { isOwn, isReplyToOwn, post } ) {
 
         <div className="col p-0 d-flex flex-column justify-content-end">
           <div>
-              <span className="fw-bold user-name">{post.user_firstname} {post.user_lastname}</span>
-              <span className="text-muted small mx-2">&#9679;&nbsp;{moment(post.created_time).fromNow()}</span>
+              <span className="fw-bold user-name">{post.user.firstname} {post.user.lastname}</span>
+              <span className="text-muted small mx-2">&#9679;&nbsp;{moment(post.created_at).fromNow()}</span>
           </div>
 
           <div>
-              <span className="text-muted small">@{post.user_firstname?.toLowerCase()}</span>
+              <Link to="#">
+                <span className="text-muted small">@{post.user.username}</span>
+              </Link>
+              
           </div>
 
         </div>
@@ -72,6 +96,15 @@ export default function Post( { isOwn, isReplyToOwn, post } ) {
 
         {/* Text */}
         <div className="col-lg-10 col-12 text-wrap px-0">
+            {( post.tagged_user &&
+              <>
+                <Link to="#">
+                  <span className="text-primary">@{post.tagged_user.username}</span>
+                </Link>
+                
+                &nbsp;&nbsp;
+              </>
+            )}
             <span>
               {post.text}
             </span>
@@ -100,7 +133,7 @@ export default function Post( { isOwn, isReplyToOwn, post } ) {
 
               {/* Reply Button */}
               <div className="col-3 d-flex justify-content-center">
-                <button className="action-btn downvote">
+                <button className="action-btn downvote" onClick={handleReply}>
                   <FontAwesomeIcon icon={faReply} />
                   <span className="small ms-2 d-sm-inline d-none">Reply</span>
                 </button>

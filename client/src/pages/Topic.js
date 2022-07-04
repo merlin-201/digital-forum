@@ -9,21 +9,33 @@ import Posts from "../components/Posts/Posts";
 import { useDispatch, useSelector } from "react-redux";
 import { getTopic } from "../actions/topic";
 import { getPosts } from "../actions/posts";
+import { showPostInputPopup } from "../actions/postInputPopup";
+import { showModal } from "../actions/authModal";
 
 export default function Topic() {
     const dispatch = useDispatch();
 
-    const [showCommentBox, setShowCommentBox] = React.useState(false);
-
-    const topicId = parseInt( useParams().id );
+    const topicId = useParams().id;
+    const showCommentBox = useSelector( (state) => state.postInputPopup.show )
+    const isUserLoggedIn = useSelector( state => state.auth.user ? true : false)
 
     React.useEffect( () => {
         dispatch( getTopic(topicId) );
         dispatch( getPosts(topicId) );
-    }, [])
+    }, [isUserLoggedIn]);
 
     const topic = useSelector( (state) => state.topic)
     const posts = useSelector( (state) => state.posts)
+
+    /* -------------------------------- functions ------------------------------- */
+    const handleAddCommentButtonClick = () => {
+        if( !isUserLoggedIn ){
+            dispatch( showModal('login') );
+            return;
+        }
+
+        dispatch( showPostInputPopup() );
+    }
 
 
     return (topic && topic.id === topicId && posts.length !== 0) && (
@@ -36,7 +48,7 @@ export default function Topic() {
                     <nav>
                         <ol className="breadcrumb">
                             <Link to="/" className="breadcrumb-item">Home</Link>
-                            <Link to={`/?cat=${topic.category_id}`} className="breadcrumb-item">{topic.category_name}</Link>
+                            <Link to={`/?cat=${topic.category.id}`} className="breadcrumb-item">{topic.category.name}</Link>
                             <Link to={`/topic/${topic.id}`} className="breadcrumb-item active">{topic.name}</Link>
                         </ol>
                     </nav>
@@ -61,7 +73,7 @@ export default function Topic() {
                                 
                                 <div className="row justify-content-end mb-3">
                                     <div className="col-auto">
-                                        <button className="btn btn-primary" onClick={ () => setShowCommentBox(true)}>
+                                        <button className="btn btn-primary" onClick={handleAddCommentButtonClick}>
                                             Add Comment
                                         </button>
                                     </div>
@@ -70,7 +82,7 @@ export default function Topic() {
 
                                 <Posts posts={posts}/>
 
-                                {showCommentBox && <PostInput setShowCommentBox={setShowCommentBox}/>}
+                                {showCommentBox && <PostInput />}
 
                             </div>
                         </div>

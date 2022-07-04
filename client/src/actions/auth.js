@@ -6,7 +6,7 @@ export const signup = (formData) => async (dispatch) => {
     try{
         const { data } = await api.signup(formData);
     
-        dispatch( { type : SIGN_UP, payload : data} );
+        dispatch( { type : SIGN_UP, payload : data } );
         dispatch({ type : HIDE_ERROR })
     }
     catch(error){
@@ -23,7 +23,7 @@ export const verify = (formData) => async (dispatch) => {
     try {
         const { data } = await api.verify(formData);
 
-        dispatch( { type : VERIFY_TOTP, payload : data} );
+        dispatch( { type : VERIFY_TOTP, payload : data } );
         dispatch( { type : SHOW_MODAL, payload : "login" });
     } catch (error) {
         console.log(error);
@@ -39,7 +39,7 @@ export const login = (formData) => async (dispatch) => {
     try {
         const { data } = await api.login(formData);
         
-        let userData = data.data;
+        let userData = data.user;
 
         localStorage.setItem("user", JSON.stringify(userData) );
         localStorage.setItem("token", data.token);

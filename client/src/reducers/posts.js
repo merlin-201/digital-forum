@@ -1,10 +1,12 @@
-import { CLEAR_POSTS, DOWNVOTE_POST, GET_POSTS, UN_DOWNVOTE_POST, UN_UPVOTE_POST, UPVOTE_POST, UPVOTE_POST_FAILED } from "../constants/actionTypes";
+import { CLEAR_POSTS, CREATE_POST, DOWNVOTE_POST, GET_POSTS, UN_DOWNVOTE_POST, UN_UPVOTE_POST, UPVOTE_POST, UPVOTE_POST_FAILED } from "../constants/actionTypes";
 
 
 const postsReducer = (posts = [], action) => {
     switch(action.type){
         case GET_POSTS:
             return action.payload;
+        case CREATE_POST:
+            return [action.payload, ...posts]
         case UPVOTE_POST:
             return posts.map( (post) => post.id === action.payload
                                         ? {
@@ -13,7 +15,7 @@ const postsReducer = (posts = [], action) => {
                                             downvote_count : (post.user_vote === -1) ? post.downvote_count - 1 : post.downvote_count,
                                             user_vote : 1
                                         }
-                                         : post);
+                                        : post);
         case UN_UPVOTE_POST:
             return posts.map( (post) => post.id === action.payload
                                             ? {
@@ -30,7 +32,7 @@ const postsReducer = (posts = [], action) => {
                                             upvote_count : (post.user_vote === 1) ? post.upvote_count - 1 : post.upvote_count,
                                             user_vote : -1
                                         }
-                                            : post);
+                                        : post);
         case UN_DOWNVOTE_POST:
             return posts.map( (post) => post.id === action.payload
                                             ? {

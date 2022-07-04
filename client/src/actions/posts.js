@@ -1,4 +1,4 @@
-import { CLEAR_POSTS, DOWNVOTE_POST, GET_POSTS, UN_DOWNVOTE_POST, UN_UPVOTE_POST, UPVOTE_POST, UPVOTE_POST_FAILED } from "../constants/actionTypes";
+import { CLEAR_POSTS, CREATE_POST, DOWNVOTE_POST, GET_POSTS, HIDE_POST_INPUT, UN_DOWNVOTE_POST, UN_UPVOTE_POST, UPVOTE_POST, UPVOTE_POST_FAILED } from "../constants/actionTypes";
 import * as api from "../api";
 
 export const getPosts = (topicId) => async (dispatch) => {
@@ -6,6 +6,18 @@ export const getPosts = (topicId) => async (dispatch) => {
         let { data } = await api.getPosts(topicId);
 
         dispatch( { type : GET_POSTS, payload : data.data} );
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const createPost = (formData) => async (dispatch) => {
+    try {
+        let { data } = await api.createPost(formData);
+        let newPost = data
+        dispatch( { type : CREATE_POST, payload : newPost} );
+
+        dispatch( { type : HIDE_POST_INPUT });
     } catch (error) {
         console.log(error);
     }
