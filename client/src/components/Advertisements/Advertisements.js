@@ -1,18 +1,28 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 
-import SampleAdBanner1 from "../../assets/images/sample-ad-1.jpg"
-import SampleAdBanner2 from "../../assets/images/sample-ad-2.jpg"
+import { getAdBanner } from '../../services/image';
 
 function Advertisements() {
-  return (
-    <div className="card">
-        <div className="card-header">Advertisements</div>
-        <div className="card-body d-flex flex-column gap-3">
-            <img src={SampleAdBanner2} alt="" />
-            <img src={SampleAdBanner1} alt="" />
-        </div>
-    </div>
-  )
+
+	const advertisements = useSelector( state => state.advertisements );
+
+	let adElements = advertisements.map( (ad) => (
+		<a href={ad.target_url} key={ad.id} target="blank">
+			<img src={getAdBanner(ad.banner)} alt="" style={ { width : "100%"} }/>
+		</a>
+		
+	));
+
+	return (
+		<div className="card">
+			<div className="card-header">Advertisements</div>
+			<div className="card-body d-flex flex-column gap-3">
+				{adElements}
+			</div>
+		</div>
+	)
+
 }
 
 export default Advertisements

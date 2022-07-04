@@ -26,8 +26,8 @@ export default function Post( { post } ) {
 
   const isUserLoggedIn = useSelector( state => state.auth.user ? true : false);
   const user = useSelector( state => state.auth.user);
-  const isOwn = ( user.id === post.user?.id );
-  const isReplyToOwn = ( user.id === post.tagged_user?.id );
+  const isOwn = (user?.id) ? ( user?.id === post.user?.id ) : false;
+  const isReplyToOwn = (user?.id) ? ( user?.id === post.tagged_user?.id ) : false;
 
   /* -------------------------------- functions ------------------------------- */
   const handleUpvote = () => {
