@@ -1,6 +1,7 @@
-const mysql = require('mysql');
+const { User } = require("../models");
+
 const {verifyToken} = require('../services/jwt');
-const {queryAsync } = require('../services/database');
+
 
 exports.requireAuth = (optional = false) => async (req, res, next) => {
     const token = req.headers?.authorization?.split(" ")[1];
@@ -14,10 +15,9 @@ exports.requireAuth = (optional = false) => async (req, res, next) => {
         // bad tokens throw a error and are caught in the catch block
         let userId = decodedToken.id;
 
-        let q = "SELECT * FROM user WHERE id = ?";
-        q = mysql.format(q, [userId]);
-
-        let [user] = await queryAsync(q);
+        let user = await User.findOne({
+            where : { id : userId }
+        });
 
         if(!user)
             throw "invalid authentication token";
