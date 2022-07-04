@@ -9,6 +9,7 @@ import Posts from "../components/Posts/Posts";
 import { useDispatch, useSelector } from "react-redux";
 import { getTopic } from "../actions/topic";
 import { getPosts } from "../actions/posts";
+import { fetchAds } from '../actions/advertisements';
 import { showPostInputPopup } from "../actions/postInputPopup";
 import { showModal } from "../actions/authModal";
 
@@ -22,6 +23,7 @@ export default function Topic() {
     React.useEffect( () => {
         dispatch( getTopic(topicId) );
         dispatch( getPosts(topicId) );
+        dispatch( fetchAds() );
     }, [isUserLoggedIn]);
 
     const topic = useSelector( (state) => state.topic)

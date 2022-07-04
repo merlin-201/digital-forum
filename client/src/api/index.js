@@ -33,3 +33,6 @@ export const downvotePost = (postId) => API.post(`/posts/${postId}/downvote`);
 export const unDownvotePost = (postId) => API.delete(`/posts/${postId}/downvote`);
 
 export const createPost = (formData) => API.post(`/posts`, formData);
+
+/* ----------------------------- advertisements ----------------------------- */
+export const fetchAds = () => API.get(`/advertisements/fetch`);

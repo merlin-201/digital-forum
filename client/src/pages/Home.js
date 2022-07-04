@@ -9,6 +9,7 @@ import UserRank from '../components/UserRank/UserRank';
 import Advertisements from '../components/Advertisements/Advertisements';
 import ExploreTopics from '../components/ExploreTopics/ExploreTopics';
 import { clearPosts } from '../actions/posts';
+import { fetchAds } from '../actions/advertisements';
 import { useSearchParams } from 'react-router-dom';
 
 export default function Home() {
@@ -23,6 +24,7 @@ export default function Home() {
     React.useEffect( () => {
        dispatch( getAllCategories( selectedCategoryId ) );
        dispatch( clearPosts() );
+       dispatch( fetchAds() );
     },[]);
 
     const allCategories = useSelector( state => state.category.allCategories );
