@@ -10,7 +10,7 @@ const db = {};
 
 // extra config stuff for sequelize apart from the connection stuff mentioned in config.json file
 const extraSequelizeConfig = {
-  logging : false,
+  //logging : false,
   define: {
     freezeTableName: true // all tables for models are stored in DB with singular name i.e User model -> "user" table
   }

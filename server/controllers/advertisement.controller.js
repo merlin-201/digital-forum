@@ -1,4 +1,5 @@
 const { Advertisement } = require("../models");
+const { Sequelize } = require("sequelize");
 
 exports.getAdvertisement = async (req, res) => {
     const advertisementId = req.params.id;
@@ -186,5 +187,27 @@ exports.changeAdvertisementStatus = async (req, res) => {
         console.log(error.name);
 
         res.status(500).json({ message : "Something went wrong"});
+    }
+}
+
+// dummy endpoint to fetch ads to be shown on the frontend
+// right now it just picks out the vertically suitable ads
+exports.fetchAdvertisements = async (req, res) => {
+
+    try {
+        let advertisements = await Advertisement.findAll({
+            where : Sequelize.literal('banner_width / banner_height <= 1.5'),
+            attributes : ["id", "name", "banner", "target_url", "section", "pages"]
+        });
+
+        res.status(200).json({
+            count : advertisements.length,
+            data : advertisements
+        });
+    } catch (error) {
+        console.log(error);
+        console.log(error.name);
+
+        res.status(500).json( { message : "Something went wrong."} )
     }
 }

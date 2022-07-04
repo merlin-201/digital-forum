@@ -40,8 +40,8 @@ module.exports = {
         id: uuidv4(),
 		name: "Ketto Donation",
 		banner: "ketto.jpeg",
-		banner_height: 101,
-		banner_width: 101,
+		banner_height: 250,
+		banner_width: 970,
 		target_url: "https://www.ketto.org/crowdfunding/fundraisers",
 		start_date: getDate(-1),		// i.e today 00:00:00
 		end_date: getDate(14, true),	//ends two weeks later
@@ -55,8 +55,8 @@ module.exports = {
         id: uuidv4(),
 		name: "Audible",
 		banner: "audible.jpeg",
-		banner_height: 101,
-		banner_width: 101,
+		banner_height: 600,
+		banner_width: 300,
 		target_url: "https://www.audible.in/?&source_code=IAARM1125112018000E/&gclid=EAIaIQobChMIvq-lm-2T9QIVLdxMAh33mgXFEAAYASAAEgLjlvD_BwE",
 		start_date: getDate(-1),		// i.e today 00:00:00
 		end_date: getDate(7, true),		//	ends one week later
@@ -70,8 +70,8 @@ module.exports = {
         id: uuidv4(),
 		name: " ICICI Prudential Life",
 		banner: "icici.jpeg",
-		banner_height: 101,
-		banner_width: 101,
+		banner_height: 250,
+		banner_width: 300,
 		target_url: "https://www.iciciprulife.com/term-insurance-plans/iprotect-smart-term-insurance-calculator.html",
 		start_date: getDate(-14),		//started two weeks earlier
 		end_date: getDate(-2, true),	// already ended
