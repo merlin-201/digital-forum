@@ -35,6 +35,10 @@ module.exports = {
 				type: Sequelize.STRING(100),
 			},
 
+			theme_color: {
+                type : Sequelize.STRING(20)
+            },
+
 			pinned: {
 				type: Sequelize.BOOLEAN,
 				allowNull: false,

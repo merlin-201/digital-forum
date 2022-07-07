@@ -15,6 +15,7 @@ module.exports = {
         name: "IRCTC",
         description: "Can I buy IRCTC, Should I buy IRCTC, Do I buy IRCTC? Discuss all your queries related to IRCTC stocks right here",
         thumbnail: "irctc.jpeg",
+        theme_color : "#452976",
         created_at : new Date(),
         modified_at : new Date()
       },
@@ -24,6 +25,7 @@ module.exports = {
         name: "Gamestop",
         description: "Can I buy Gamestop, Should I buy Gamestop, Do I buy Gamestop? Discuss all your queries related to Gamestop stocks here",
         thumbnail: "gamestop.jpeg",
+        theme_color : "#000000",
         created_at : new Date(),
         modified_at : new Date()
       },
@@ -33,6 +35,7 @@ module.exports = {
         name: "Bitcoin",
         description: "Can I buy Bitcoin, Should I buy Bitcoin, Do I buy Bitcoin? Discuss all your queries related to the most popular cryptocurrency here.",
         thumbnail: "bitcoin.jpeg",
+        theme_color : "#FFA202",
         created_at : new Date(),
         modified_at : new Date()
       },
@@ -42,6 +45,7 @@ module.exports = {
         name: "Ethereum",
         description: "Can I buy Ethereum, Should I buy Ethereum, Do I buy Ethereum? Discuss all your queries about Etheruem here",
         thumbnail: "ethereum.jpeg",
+        theme_color : "#637EE9",
         created_at : new Date(),
         modified_at : new Date()
       },
@@ -51,6 +55,7 @@ module.exports = {
         name: "TATA Large Cap Fund",
         description: "Fund has 98.08% investment in indian stocks of which 78.36% is in large cap stocks, 7.09% is in mid cap stocks, 3.47% in small cap stocks.",
         thumbnail: "tata.jpeg",
+        theme_color : "#0250A2",
         created_at : new Date(),
         modified_at : new Date()
       }

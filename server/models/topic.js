@@ -67,6 +67,10 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.STRING(100),
             },
 
+            theme_color: {
+                type : DataTypes.STRING(20)
+            },
+
             pinned: {
                 type: DataTypes.BOOLEAN,
                 allowNull: false,

@@ -42,12 +42,13 @@ exports.getTopic = async (req, res) => {
 exports.createTopic = async (req, res) => {
     const { category_id, name, description } = req.body;
     const thumbnail = req?.file?.fileSaveName;
+    const thumbnailDominantColor = req?.file?.dominantColor;
     // ?. is optional chaining .. i.e if req.file exists only then req.file.fileSaveName is checked
     // otherwise thumbnail = undefined
 
     try {
 
-        const newTopic = await Topic.create({ name, description, thumbnail, category_id });
+        const newTopic = await Topic.create({ name, description, thumbnail, theme_color : thumbnailDominantColor, category_id });
 
         // get new Category from DB
         const topic = await Topic.findOne( {

@@ -12,7 +12,7 @@ function TopicCard( {topic} ) {
                 <div className="row">
 
                   <div className="col-sm-12 col-auto d-flex justify-content-center mb-sm-2 mb-0">
-                    <img src={getImage(topic.thumbnail)} className="rounded-circle" height="80px"alt="" />
+                    <img src={topic.thumbnail ? getImage(topic.thumbnail) : getImage('default-topic.jpg')} className="rounded-circle" height="80px"alt="" />
                   </div>
 
                   <div className="col-sm-12 col text-sm-center text-start d-flex flex-column justify-content-center">
