@@ -40,7 +40,7 @@ export default function Topic() {
     }
 
 
-    return (topic && topic.id === topicId && posts.length !== 0) && (
+    return ( topic && topic.id === topicId ) && (
         <div className="container-xl dashboard p-0">
 
             <div className="row justify-content-center">
